@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using W4D1mvc.Models;
@@ -8,7 +9,7 @@ namespace W4D1mvc.Controllers
     public class ClassmateController
         : Controller
     {
-   
+
 
         // GET: People
         public ActionResult ListClassMates()
@@ -32,25 +33,26 @@ namespace W4D1mvc.Controllers
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
-            var x = collection;
-            classmate newPerson = new classmate(collection["Name"], collection["HairColor"], int.Parse(collection["Height"]));
-            W4D1mvc.App_Start.MyStartup.Classmates.Add(newPerson);
-           Data.SaveClassMates();
+            try
+            {
+                var x = collection;
+                classmate newPerson = new classmate(collection["Name"], collection["HairColor"], int.Parse(collection["Height"]));
+                W4D1mvc.App_Start.MyStartup.Classmates.Add(newPerson);
+                Data.SaveClassMates();
 
-            // TODO: Add insert logic here
+                return RedirectToAction("ListClassMates");
+            }
 
-            return RedirectToAction("ListClassMates");
-
-            //catch
-            //{
-            //    return View();
-            //}
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: People/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(App_Start.MyStartup.Classmates[id]);
         }
 
         // POST: People/Edit/5
@@ -59,7 +61,9 @@ namespace W4D1mvc.Controllers
         {
             try
             {
-                // TODO: Add update logic here
+                App_Start.MyStartup.Classmates[id].HairColor = collection["HairColor"];
+                App_Start.MyStartup.Classmates[id].Name = collection["Name"];
+                App_Start.MyStartup.Classmates[id].Height = int.Parse(collection["Height"]);
 
                 return RedirectToAction("ListClassMates");
             }
