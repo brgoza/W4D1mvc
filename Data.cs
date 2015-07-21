@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
@@ -40,13 +41,15 @@ namespace W4D1mvc
             return HostingEnvironment.MapPath(@"~\App_Data\classmates.csv");
         }
 
-        public static void AddClassMate(classmate p, string filename="")
+        public static void SaveClassMates()
         {
-            if (filename == "") filename = GetNewFileName();
-            var writer = System.IO.File.AppendText(filename);
-            writer.WriteLine("\r\n" + p.Name + "," + p.HairColor + "," + p.Height);
-            writer.Close();
-
+            StringBuilder sb = new StringBuilder();
+            foreach (classmate c in App_Start.MyStartup.Classmates)
+            {
+                sb.AppendLine(string.Format("{0},{1},{2}", c.Name, c.HairColor, c.Height));
+            }
+             System.IO.File.WriteAllText(GetNewFileName(), sb.ToString());
         }
+
     }
 }

@@ -35,7 +35,7 @@ namespace W4D1mvc.Controllers
             var x = collection;
             classmate newPerson = new classmate(collection["Name"], collection["HairColor"], int.Parse(collection["Height"]));
             W4D1mvc.App_Start.MyStartup.Classmates.Add(newPerson);
-            Data.AddClassMate(newPerson);
+           Data.SaveClassMates();
 
             // TODO: Add insert logic here
 
@@ -83,7 +83,7 @@ namespace W4D1mvc.Controllers
             {
                 // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("ListClassMates");
             }
             catch
             {
